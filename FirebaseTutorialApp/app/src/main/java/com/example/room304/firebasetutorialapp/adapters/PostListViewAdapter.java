@@ -1,4 +1,4 @@
-package com.example.benitkibabu.firebaseexample.adapters;
+package com.example.room304.firebasetutorialapp.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.benitkibabu.firebaseexample.R;
-import com.example.benitkibabu.firebaseexample.models.Post;
+import com.example.room304.firebasetutorialapp.R;
+import com.example.room304.firebasetutorialapp.models.Post;
 
 import java.util.List;
 
@@ -46,8 +46,8 @@ public class PostListViewAdapter extends ArrayAdapter<Post>{
             convertView = inflater.inflate(resource, parent, false);
 
             holder = new PostHolder();
-            holder.nameField = (TextView) convertView.findViewById(R.id.nameField);
-            holder.postField = (TextView) convertView.findViewById(R.id.postField);
+            holder.nameField = (TextView) convertView.findViewById(R.id.nameText);
+            holder.postField = (TextView) convertView.findViewById(R.id.postText);
 
             convertView.setTag(holder);
         }else{
