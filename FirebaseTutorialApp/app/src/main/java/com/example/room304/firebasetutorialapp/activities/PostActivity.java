@@ -2,13 +2,21 @@ package com.example.room304.firebasetutorialapp.activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.room304.firebasetutorialapp.R;
 import com.example.room304.firebasetutorialapp.adapters.PostListViewAdapter;
+import com.example.room304.firebasetutorialapp.fragmenst.CreateCommentDialog;
+import com.example.room304.firebasetutorialapp.fragmenst.CreatePostDialog;
 import com.example.room304.firebasetutorialapp.models.Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +36,7 @@ public class PostActivity extends BaseActivity {
     PostListViewAdapter adapter;
 
     List<Post> postList;
+    List<String> keyList;
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener listener;
@@ -41,6 +50,8 @@ public class PostActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        keyList = new ArrayList<>();
 
         auth = FirebaseAuth.getInstance();
         listener = new FirebaseAuth.AuthStateListener() {
@@ -69,6 +80,19 @@ public class PostActivity extends BaseActivity {
         listView = (ListView) findViewById(R.id.listView);
         adapter = new PostListViewAdapter(this, R.layout.post_item, postList);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String key = keyList.get(position);
+                Post p = postList.get(position);
+                Intent i = new Intent(PostActivity.this, PostDetailActivity.class);
+                i.putExtra("pid", key);
+                i.putExtra("post", p.getPost());
+                startActivity(i);
+
+            }
+        });
     }
 
     @Override
@@ -84,12 +108,12 @@ public class PostActivity extends BaseActivity {
                 for(DataSnapshot child : dataSnapshot.getChildren()){
                     Log.d("child", child.getValue(Post.class).toMap().toString());
 
+                    keyList.add(child.getKey());
                     Post p = child.getValue(Post.class);
                     Log.d("P", p.getPost());
                     postList.add(p);
                 }
                 adapter.updateList(postList);
-
             }
 
             @Override
@@ -146,5 +170,26 @@ public class PostActivity extends BaseActivity {
         if(mChildEventListener != null){
             postReference.removeEventListener(mChildEventListener);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.post_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.action_new_post){
+            FragmentManager manager = getSupportFragmentManager();
+            CreatePostDialog f = CreatePostDialog.newInstance(user.getUid(), user.getDisplayName());
+            f.show(manager, "Post Dialog");
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+
     }
 }

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by room3.04 on 14/06/2017.
@@ -43,8 +44,8 @@ public class BaseActivity extends AppCompatActivity {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
-    public String getUserId(){
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    public FirebaseUser getUser(){
+        return FirebaseAuth.getInstance().getCurrentUser();
     }
 
 }

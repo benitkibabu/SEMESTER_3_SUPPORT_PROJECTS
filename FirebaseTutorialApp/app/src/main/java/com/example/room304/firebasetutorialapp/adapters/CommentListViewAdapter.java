@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.room304.firebasetutorialapp.R;
-import com.example.room304.firebasetutorialapp.models.Post;
+import com.example.room304.firebasetutorialapp.models.Comment;
 
 import java.util.List;
 
@@ -16,12 +16,12 @@ import java.util.List;
  * Created by Benit Kibabu on 13/06/2017.
  */
 
-public class PostListViewAdapter extends ArrayAdapter<Post>{
+public class CommentListViewAdapter extends ArrayAdapter<Comment>{
     //List<Post> posts;
     int resource;
-    List<Post> posts;
+    List<Comment> posts;
     private Context context;
-    public PostListViewAdapter(Context context, int resource, List<Post> postList) {
+    public CommentListViewAdapter(Context context, int resource, List<Comment> postList) {
         super(context, resource, postList);
         this.resource = resource;
         this.context = context;
@@ -29,7 +29,7 @@ public class PostListViewAdapter extends ArrayAdapter<Post>{
     }
 
 
-    public void updateList(List<Post> postList){
+    public void updateList(List<Comment> postList){
         posts.clear();
         posts.addAll(postList);
         this.notifyDataSetChanged();
@@ -38,7 +38,7 @@ public class PostListViewAdapter extends ArrayAdapter<Post>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Post post = posts.get(position);
+        Comment c = posts.get(position);
         PostHolder holder;
 
         if(convertView == null){
@@ -47,25 +47,21 @@ public class PostListViewAdapter extends ArrayAdapter<Post>{
 
             holder = new PostHolder();
             holder.nameField = (TextView) convertView.findViewById(R.id.nameText);
-            holder.postField = (TextView) convertView.findViewById(R.id.postText);
+            holder.commentField = (TextView) convertView.findViewById(R.id.postText);
 
             convertView.setTag(holder);
         }else{
             holder = (PostHolder) convertView.getTag();
         }
 
-        holder.nameField.setText(post.getUsername());
-        holder.postField.setText(post.getPost());
+        holder.nameField.setText(c.getUsername());
+        holder.commentField.setText(c.getComment());
 
         return convertView;
     }
 
     static class PostHolder{
         TextView nameField;
-        TextView postField;
+        TextView commentField;
     }
-
-
-
-
 }

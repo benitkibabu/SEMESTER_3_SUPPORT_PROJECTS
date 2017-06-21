@@ -140,6 +140,10 @@ public class ProfileActivity extends BaseActivity {
             return true;
         }
 
+        else if(id == R.id.action_new_post){
+            startActivity(new Intent(this, WebViewActivity.class));
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
